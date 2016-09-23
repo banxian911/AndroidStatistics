@@ -69,14 +69,18 @@
 （3）在Android.mk文件中加入引用jar包的配置信息具体如下:
 
 \#Add-by yunlong ---start
-LOCAL_STATIC_JAVA_LIBRARIES += \
-       android_help_lib
+
+		LOCAL_STATIC_JAVA_LIBRARIES += \
+		android_help_lib
+		
 \#Add-by yunlong ---end
 
 \#Add-by yunlong ---start
-include $(CLEAR_VARS)
-LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := android_help_lib:libs/android_help.jar
-include $(BUILD_MULTI_PREBUILT)
+
+		include $(CLEAR_VARS)
+		LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := android_help_lib:libs/android_help.jar
+		include $(BUILD_MULTI_PREBUILT)
+		
 \#Add-by yunlong ---end
 
 注意：若Settings目录下存在tests文件夹，需要在Settings/tests/下新建libs目录，将android_help.jar文件复制到该目录下。
