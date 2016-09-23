@@ -1,22 +1,26 @@
 # AndroidStatistics
-此项目主要分为两部分，注册，请求静默接口并调用系统下载部分（下面简称注册部分）和安装部分。
 
-一 注册部分
+This is a mobile phones information collection system of the test program
+
+一.移植方式：
+------
   移植分两种形式，独立apk形式和以jar包形式放入Settings.apk中两种。
   1. 独立apk形式移植，直接放入system/priv-app下面。
-  2. 以jar包形式移植。
-   （1）在settings项目中创建libs文件夹，将jar包放入libs文件夹下。
-   （2）在AndroidManifest.xml文件中加入下列权限:
-   <!-- add statistics start-->
-<uses-permission android:name="android.permission.INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.ACTION_DOWNLOAD_COMPLETE"/>
-    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
-    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
-<!-- add statistics end-->
+  2. 以jar包形式移植。<br>
+   （1）将此项目中的/src目录下的所有文件，以jar的方式导出为android_help.jar<br> 
+   （2）在settings项目中创建libs文件夹，将jar包放入libs文件夹下。<br>
+   （3）在AndroidManifest.xml文件中加入下列权限:
+   	<!-- add statistics start-->
+	<uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+	<uses-permission android:name="android.permission.ACTION_DOWNLOAD_COMPLETE"/>
+    	<uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    	<uses-permission android:name="android.permission.DELETE_PACKAGES" />
+	<!-- add statistics end-->
+
   在application中加入下列组件内容：其中标注红色的ChannelID的value值为移植时候需要提前商定的渠道号
 
-	 <!-- add statistics start-->
-      <!-- 渠道号 -->
+	<!-- add statistics start-->
+      	<!-- 渠道号 -->
         <meta-data
             android:name="ChannelID"
             android:value="ad_hqyxcore_001" />
@@ -66,7 +70,7 @@
 
 
           
-（3）在Android.mk文件中加入引用jar包的配置信息具体如下:
+（4）在Android.mk文件中加入引用jar包的配置信息具体如下:
 
 \#Add-by yunlong ---start
 
@@ -85,7 +89,12 @@
 
 注意：若Settings目录下存在tests文件夹，需要在Settings/tests/下新建libs目录，将android_help.jar文件复制到该目录下。
 （不这样做的话，会在全编的时候报错）
+二.项目内容
+------
+此项目主要分为两部分：<br>
+（1）手机注册与软件更新；<br>
+（2）软件下载与静默安装；<br>
 
-二 安装部分
-   这部分主要是对Packageinstaller的代码进行修改。修改的文件主要有以下三个，分别是：PackageInstallerActivity，UninstallerActivity，UninstallAppProgress。
+###静默安装
+
 
