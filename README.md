@@ -9,7 +9,7 @@ This is a mobile phones information collection system of the test program
   2. 以jar包形式移植。<br>
    （1）将此项目中的/src目录下的所有文件，以jar的方式导出为android_help.jar<br> 
    （2）在settings项目中创建libs文件夹，将jar包放入libs文件夹下。<br>
-   （3）在AndroidManifest.xml文件中加入下列权限:
+   （3）在Settings/AndroidManifest.xml文件中加入下列权限:
    	<!-- add statistics start-->
 	<uses-permission android:name="android.permission.INSTALL_PACKAGES" />
 	<uses-permission android:name="android.permission.ACTION_DOWNLOAD_COMPLETE"/>
@@ -45,14 +45,13 @@ This is a mobile phones information collection system of the test program
             </intent-filter>
         </receiver>
 		
-		 <receiver
+	<receiver
             android:name="com.android.settings.AutoInstallApkReceiver"
             android:exported="true"
             android:process=":remote" >
             <intent-filter>
                 <action android:name="com.android.AutoInstallApkReceiver.install" />
             </intent-filter>
-            
         </receiver>
 
         <service
@@ -97,4 +96,16 @@ This is a mobile phones information collection system of the test program
 
 ###静默安装
 
+由于静默安装需要使用系统未开放的API，所以将AutoInstallApkReceive.java放置在Settings/src/com/android/settings目录下，
+在Settings/AndroidManifest.xml中添加如下代码（移植部分已经包含，在此单独列出）：
 
+	<uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+	
+	<receiver
+            android:name="com.android.settings.AutoInstallApkReceiver"
+            android:exported="true"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="com.android.AutoInstallApkReceiver.install" />
+            </intent-filter>
+        </receiver>
