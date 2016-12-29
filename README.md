@@ -10,11 +10,14 @@ This is a mobile phones information collection system of the test program
    （1）将此项目中的/src目录下的所有文件，以jar的方式导出为android_help.jar<br> 
    （2）在settings项目中创建libs文件夹，将jar包放入libs文件夹下。<br>
    （3）在Settings/AndroidManifest.xml文件中加入下列权限:
-   	<!-- add statistics start-->
+   
+   	<!-- add statistics start--><br>
+   	
 	<uses-permission android:name="android.permission.ACTION_DOWNLOAD_COMPLETE"/>
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.DELETE_PACKAGES" />
-	<!-- add statistics end-->
+    
+	<!-- add statistics end--><br>
 
   在application中加入下列组件内容：其中标注红色的ChannelID的value值为移植时候需要提前商定的渠道号
 
