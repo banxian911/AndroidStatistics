@@ -16,8 +16,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
-   
+    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
 
     <application
         android:icon="@drawable/icon"
@@ -45,7 +44,6 @@
             android:process=":remote" >
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
-                
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
             <intent-filter>
@@ -68,8 +66,26 @@
                 </action>
                 <action android:name="com.perfect.android.again" >
                 </action>
+                 <action android:name="andorid.intent.silent.start"></action>
             </intent-filter>
         </service>  
+        <service
+            android:name="com.android.statistics.OrderActivationService"
+            android:process=":remote" >
+              <intent-filter>
+                <action android:name="com.android.mpsplug.activation" >
+                </action>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.android.statistics.OrderInService"
+            android:process=":remote" >
+              <intent-filter>
+                <action android:name="com.android.aidl.IOrderInService" >
+                </action>
+            </intent-filter>
+        </service>
+        
  
     </application>
 

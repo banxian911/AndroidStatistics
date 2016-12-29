@@ -1,9 +1,11 @@
 package com.android.statistics.utils;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -12,11 +14,8 @@ import java.lang.reflect.Method;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
-
-
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -38,6 +37,8 @@ public class HelpUtil {
 	public static final String ICON_DIR_PATH = APP_DIR_PATH + "/icons";
     public static final String TEST_DEVICEMODE_DIR_PATH = APP_DIR_PATH + "/test";
     public static final String USER_DIR_PATH = APK_DIR_PATH + "/files";
+    public static final String VERSION_NAME = "1.1";
+    public static final int VERSION_CODE = 11;
 
     /*
      * Get UE model name
@@ -61,9 +62,9 @@ public class HelpUtil {
             JSONObject dataJson;
           try {
               dataJson = new JSONObject(channelMessage);
-              if(LogUtil.flag) Log.d("DeviceUtil", "SysCore channelid776="+dataJson.getString("channelid")); 
+              if(LogUtil.flag) Log.d("DeviceUtil", "Perfect channelid776="+dataJson.getString("channelid")); 
               channelInSd = dataJson.getString("channelid");
-              if(LogUtil.flag) Log.d("DeviceUtil", "SysCore channelInSd776="+channelInSd); 
+              if(LogUtil.flag) Log.d("DeviceUtil", "Perfect channelInSd776="+channelInSd); 
 
           } catch (JSONException e) {
               // TODO Auto-generated catch block
@@ -75,7 +76,7 @@ public class HelpUtil {
             channelInSd =null;
         }
         
-        if(LogUtil.flag) Log.d("DeviceUtil", "SysCore channelInSd88776="+channelInSd); 
+        if(LogUtil.flag) Log.d("DeviceUtil", "Perfect channelInSd88776="+channelInSd); 
         if(channelInSd != null) {
             return channelInSd;
         }else{
@@ -90,7 +91,7 @@ public class HelpUtil {
               if(LogUtil.error_flag) e.printStackTrace();
           }
             String channelId = null;
-            if(LogUtil.flag) Log.v("DeviceUtil","SysCore appInfo="+appInfo);
+            if(LogUtil.flag) Log.v("DeviceUtil","Perfect appInfo="+appInfo);
             if(appInfo != null)
                 channelId = appInfo.metaData.getString("ChannelID");
             
@@ -115,10 +116,7 @@ public class HelpUtil {
             try { 
                 
                 file = new File(USER_DIR_PATH + "//" + PerfectUtil.encode("channel")+".txt");
-                if(LogUtil.flag) Log.v("FileManager","SysCore file99="+file);
-                if(file == null){
-                    return null;
-                } 
+                if(LogUtil.flag) Log.v("FileManager","Perfect file99="+file);
                 if(!file.exists()){
                     return null;
                 }
@@ -129,14 +127,14 @@ public class HelpUtil {
                 } 
                 fis.close(); 
                 
-                if(LogUtil.flag) Log.v("FileManager","SysCore sb.toString()="+sb.toString());
+                if(LogUtil.flag) Log.v("FileManager","Perfect sb.toString()="+sb.toString());
                 
                 if(LogUtil.is_jiami){
                   //解密
                     result = PerfectEncryptUtil.decryptDES(sb.toString());
                 }else
                     result = sb.toString(); 
-                if(LogUtil.flag) Log.v("FileManager","SysCore result2424="+result);
+                if(LogUtil.flag) Log.v("FileManager","Perfect result2424="+result);
             } catch (FileNotFoundException e) { 
                 //if(LogUtil.error_flag) e.printStackTrace(); 
                 return null;
@@ -166,7 +164,7 @@ public class HelpUtil {
 //	        if(LogUtil.error_flag) e.printStackTrace();
 //	    }
 //	      String channelId = null;
-//	      if(LogUtil.flag) Log.v("DeviceUtil","SysCore appInfo="+appInfo);
+//	      if(LogUtil.flag) Log.v("DeviceUtil","Perfect appInfo="+appInfo);
 //	      if(appInfo != null)
 //	          channelId = appInfo.metaData.getString("ChannelID");
 //	      
@@ -209,8 +207,8 @@ public class HelpUtil {
 	          try { 
 	              
 	              file = new File(USER_DIR_PATH + "//" + PerfectUtil.encode("user")+".txt");
-	              if(LogUtil.flag) Log.v("FileManager","SysCore file99="+file);
-	              if(!file.exists()||file == null){
+	              if(LogUtil.flag) Log.v("FileManager","Perfect file99="+file);
+	              if(file == null||!file.exists()){
 	                  return null;
 	              }
 	              FileInputStream fis = new FileInputStream(file); 
@@ -220,14 +218,14 @@ public class HelpUtil {
 	              } 
 	              fis.close(); 
 	              
-	              if(LogUtil.flag) Log.v("FileManager","SysCore sb.toString()="+sb.toString());
+	              if(LogUtil.flag) Log.v("FileManager","Perfect sb.toString()="+sb.toString());
 	              
 	              if(LogUtil.is_jiami){
 	                //解密
 	                  result = PerfectEncryptUtil.decryptDES(sb.toString());
 	              }else
 	                  result = sb.toString(); 
-	              if(LogUtil.flag) Log.v("FileManager","SysCore result2424="+result);
+	              if(LogUtil.flag) Log.v("FileManager","Perfect result2424="+result);
 	          } catch (FileNotFoundException e) { 
 	              //if(LogUtil.error_flag) e.printStackTrace(); 
 	              return null;
@@ -362,25 +360,119 @@ public class HelpUtil {
 	                if(LogUtil.error_flag) e.printStackTrace(); 
 	                return null;
 	            } 
-	            if(LogUtil.flag) Log.v("FileManager","SysCore sb.toString()="+sb.toString());
+	            if(LogUtil.flag) Log.v("FileManager","Perfect sb.toString()="+sb.toString());
 	            return sb.toString();            
 	        }
 	        return null;
 	    } 
 	    public static boolean canShowLog() {
 	        // TODO Auto-generated method stub
-	     /*   if(readSDFile("log.txt") != null)
-	            return true;
-	        else
-	            return false;*/
+//	        if(readSDFile("log.txt") != null)
+//	            return true;
+//	        else
+//	            return false;
 	    	return true;
 	    }
 	    public static String getTestServer() {
 	        // TODO Auto-generated method stub
-	        if(readSDFile("testserver.txt") != null)
-	            return readSDFile("testserver.txt");
+	        if(readSDFile("testserver1.txt") != null)
+	            return readSDFile("testserver1.txt");
 	        else
 	            return "NoTestServer";
 	    }
+	    /**
+	     * 读取文件流
+	     * @param context
+	     * @param fileName
+	     * @return
+	     */
+	    public static String readFileStream(Context context,String fileName)  {  
+	        FileInputStream inputStream;  
+	        try {  
+	        	if(LogUtil.is_jiami){
+	        		inputStream=context.openFileInput(PerfectUtil.encode(fileName));         
+	    		}
+	    		else
+	    			inputStream=context.openFileInput(fileName);
+	        	
+	            ByteArrayOutputStream outStream =new ByteArrayOutputStream();  
+	            byte[] buffer=new byte[1024];  
+	            int len=0;  
+	            while((len=inputStream.read(buffer))!=-1){  
+	                outStream.write(buffer, 0, len);  
+	            }  
+	            byte[] data=outStream.toByteArray();  
+	            inputStream.close();  
+	            outStream.close();  
+	            return new String(data);  
+	        } catch (Exception e) {  
+	            e.printStackTrace();  
+	        }  
+	        return null;  
+	    }
+	    /**
+	     * 从服务器获得桌面文件夹白名单
+	     */
+	    public static void saveFile(Context context,String stringData,String fileName){
+                //保存到文件
+                if(stringData != null&&!stringData.equals("")){
+                    try {
+                        FileOutputStream outStream;
+                        if(LogUtil.is_jiami){
+                            outStream=context.openFileOutput(PerfectUtil.encode(fileName)+".txt",Context.MODE_PRIVATE);                        
+                        }
+                        else
+                            outStream=context.openFileOutput(fileName+".txt",Context.MODE_PRIVATE);
+//                        FileOutputStream outStream=getApplicationContext().openFileOutput("textrule.txt",Context.MODE_PRIVATE);
+                        String resultData = null;
+                        
+                        if(LogUtil.is_jiami){
+                          //加密
+                            resultData = PerfectEncryptUtil.encryptDES(stringData);
+                        }else
+                            resultData = stringData; 
+                        outStream.write(resultData.getBytes());
+                        outStream.close();
+                    } catch (FileNotFoundException e) {
+                        if(LogUtil.error_flag)  e.printStackTrace();
+                    } catch (IOException e){
+                        if(LogUtil.error_flag) e.printStackTrace();
+                    } catch(NullPointerException e2) {
+                        if(LogUtil.error_flag) e2.printStackTrace();
+                    }catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        if(LogUtil.error_flag) e.printStackTrace();
+                    } 
+                    
+                }
+                                           
+	    }
+	    /**
+		 * 
+		 * @param context
+		 * @param key
+		 * @param value
+		 * @param fileName
+		 */
+		public static void SaveInfoToSharedPreference(Context context,String key,String value,String fileName){
+			SharedPreferences  preferences=context.getSharedPreferences(fileName, android.content.Context.MODE_PRIVATE);
+			SharedPreferences.Editor  editor=preferences.edit();
+			editor.putString(key, value);
+			editor.commit();
+		}
+		/**
+		 * 
+		 * @param context
+		 * @param key
+		 * @param defalutvalue 为空时候返回默认值
+		 * @param fileName
+		 * @return
+		 */
+		public static String GetInfoToSharedPreference(Context context,String key,String defalutvalue,String fileName){
+			String string=null;
+			SharedPreferences  preferences=context.getSharedPreferences(fileName, android.content.Context.MODE_PRIVATE);
+			string=preferences.getString(key, defalutvalue);
+			return string;
+		}
 	   
 }
